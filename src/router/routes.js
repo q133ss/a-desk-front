@@ -5,15 +5,18 @@ export default [
         path: '/login',
         name: 'login',
         component: () => import('../views/pages/account/login'),
-        meta: {
-            beforeResolve(routeTo, routeFrom, next) {
-                if (store.getters['auth/loggedIn']) {
-                    next({ name: 'home' })
-                } else {
-                    // Continue to the login page
-                    next()
-                }
-            },
+        beforeEnter: (to, from, next) => {
+            console.log('beforeEnter for /login');
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                console.log('User and token are present:', user, token);
+                next({ name: 'home' });
+            } else {
+                console.log('User or token are missing:', user, token);
+                next();
+            }
         },
     },
     {
@@ -22,16 +25,20 @@ export default [
         component: () => import('../views/pages/account/register'),
         meta: {
             beforeResolve(routeTo, routeFrom, next) {
-                // If the user is already logged in
-                if (store.getters['auth/loggedIn']) {
-                    // Redirect to the home page instead
-                    next({ name: 'home' })
+                // Проверяем наличие 'user' или 'token' в localStorage
+                const user = localStorage.getItem('user');
+                const token = localStorage.getItem('token');
+
+                if (user || token) {
+                    // Если пользователь и токен присутствуют, перенаправляем на домашнюю страницу
+                    next({ name: 'home' });
                 } else {
-                    // Continue to the login page
-                    next()
+                    // Иначе позволяем пользователю перейти на страницу (например, на страницу логина)
+                    next();
                 }
             },
         },
+
     },
     {
         path: '/forgot-password',
