@@ -255,20 +255,41 @@ export default {
           <li>
             <a href="javascript: void(0);" class="has-arrow waves-effect">
               <i class="ri-share-line"></i>
-              <span>Multi Level</span>
+              <span>Настройки</span>
             </a>
             <ul class="sub-menu" aria-expanded="true">
               <li>
-                <a href="javascript: void(0);">Level 1.1</a>
-              </li>
-              <li>
-                <a href="javascript: void(0);" class="has-arrow">Level 1.2</a>
+                <a href="javascript: void(0);" class="has-arrow">Система</a>
                 <ul class="sub-menu" aria-expanded="true">
                   <li>
-                    <a href="javascript: void(0);">Level 2.1</a>
+                    <a href="javascript: void(0);">Общие настройки</a>
                   </li>
                   <li>
-                    <a href="javascript: void(0);">Level 2.2</a>
+                    <a href="javascript: void(0);">Профиль</a>
+                  </li>
+                  <li>
+                    <a href="javascript: void(0);">Пользователи</a>
+                  </li>
+                  <li>
+                    <a href="javascript: void(0);">Партнерская программа</a>
+                  </li>
+                </ul>
+              </li>
+
+              <li>
+                <a href="javascript: void(0);" class="has-arrow">Ваш бизнес</a>
+                <ul class="sub-menu" aria-expanded="true">
+                  <li>
+                    <a href="javascript: void(0);">Юридические лица</a>
+                  </li>
+                  <li>
+                    <a href="javascript: void(0);">Банковские счета</a>
+                  </li>
+                  <li>
+                    <a href="javascript: void(0);">Статьи операций</a>
+                  </li>
+                  <li>
+                    <a href="javascript: void(0);">Группы счетов</a>
                   </li>
                 </ul>
               </li>
