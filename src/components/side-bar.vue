@@ -191,7 +191,7 @@ export default {
                     <router-link :to="{ name: 'general settings' }">Общие настройки</router-link>
                   </li>
                   <li>
-                    <a href="javascript: void(0);">Профиль</a>
+                    <router-link :to="{ name: 'profile settings' }">Профиль</router-link>
                   </li>
                   <li>
                     <a href="javascript: void(0);">Пользователи</a>

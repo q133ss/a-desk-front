@@ -106,6 +106,35 @@ async function updateGeneralSettings(company_name, subdomain, currency_id, timez
     return await postRequest('/general/settings', data, true);
 }
 
+async function updateProfile(avatar, email, name, phone, show_pennies, show_description) {
+    // Создайте объект FormData
+    const formData = new FormData();
+
+    // Добавьте данные в FormData
+    if (avatar) {
+        formData.append('avatar', avatar);
+    }
+    formData.append('email', email);
+    formData.append('name', name);
+    formData.append('phone', phone);
+    formData.append('show_pennies', show_pennies);
+    formData.append('show_description', show_description);
+
+    // Выполните запрос с formData
+    try {
+        const token = localStorage.getItem('token');
+        const response = await axios.post(host_url+'/profile', formData, {
+            headers: {
+                'Content-Type': 'multipart/form-data',
+                'Authorization': `Bearer ${token}`
+            }
+        });
+        return response.data;
+    } catch (error) {
+        throw new Error(error.response?.data?.message || 'Произошла ошибка при обновлении данных.');
+    }
+}
+
 export {
     getRequest,
     postRequest,
@@ -113,5 +142,6 @@ export {
     getMe,
     getCurrency,
     getTimezones,
-    updateGeneralSettings
+    updateGeneralSettings,
+    updateProfile
 };

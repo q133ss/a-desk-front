@@ -33,7 +33,7 @@ export default {
         }
       ],
       current_language: "en",
-      username : JSON.parse(localStorage.getItem('user')).username
+      username : JSON.parse(localStorage.getItem('user')).name
     };
   },
   components: { simplebar },
