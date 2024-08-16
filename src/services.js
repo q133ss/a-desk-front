@@ -4,9 +4,25 @@ import axios from 'axios';
 const host_url = 'http://localhost/api';
 
 // Метод для GET запросов
-async function getRequest(endpoint, params = {}) {
+async function getRequest(endpoint, params = {}, requireAuth = false) {
     try {
-        const response = await axios.get(`${host_url}${endpoint}`, { params });
+        // Объект с заголовками
+        let headers = {};
+
+        // Если запрос требует авторизации, добавляем токен в заголовок
+        if (requireAuth) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+        }
+
+        // Отправляем GET запрос с параметрами и заголовками
+        const response = await axios.get(`${host_url}${endpoint}`, {
+            params,
+            headers
+        });
+
         return response.data;
     } catch (error) {
         handleError(error);
@@ -14,9 +30,19 @@ async function getRequest(endpoint, params = {}) {
 }
 
 // Метод для POST запросов
-async function postRequest(endpoint, data = {}) {
+async function postRequest(endpoint, data = {}, requireAuth = false) {
     try {
-        const response = await axios.post(`${host_url}${endpoint}`, data);
+        let headers = {};
+
+        if (requireAuth) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+        }
+
+        // Передаем заголовки как часть объекта конфигурации запроса
+        const response = await axios.post(`${host_url}${endpoint}`, data, { headers });
         return response.data;
     } catch (error) {
         handleError(error);
@@ -55,4 +81,37 @@ async function login(email, password) {
     }
 }
 
-export { getRequest, postRequest, login };
+// Получить текущего юзера
+async function getMe() {
+    return await getRequest('/me', {}, true);
+}
+
+async function getCurrency() {
+    return await getRequest('/currency', {}, true);
+}
+
+async function getTimezones() {
+    return await getRequest('/timezones', {}, true);
+}
+
+async function updateGeneralSettings(company_name, subdomain, currency_id, timezone_id, date_format, time_format) {
+    const data = {
+        company_name,
+        subdomain,
+        currency_id,
+        timezone_id,
+        date_format,
+        time_format
+    };
+    return await postRequest('/general/settings', data, true);
+}
+
+export {
+    getRequest,
+    postRequest,
+    login,
+    getMe,
+    getCurrency,
+    getTimezones,
+    updateGeneralSettings
+};

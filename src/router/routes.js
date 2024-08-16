@@ -85,6 +85,17 @@ export default [
         component: () => import('../views/pages/dashboard/index')
     },
     {
+        path: '/general/settings',
+        name: 'general settings',
+        meta: {
+            authRequired: true,
+        },
+        component: () => import('../views/page/settings/general')
+    },
+
+
+    /// below not my code
+    {
         path: '/chat',
         name: 'Chat',
         meta: {
