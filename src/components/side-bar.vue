@@ -206,7 +206,7 @@ export default {
                 <a href="javascript: void(0);" class="has-arrow">Ваш бизнес</a>
                 <ul class="sub-menu" aria-expanded="true">
                   <li>
-                    <a href="javascript: void(0);">Юридические лица</a>
+                    <router-link :to="{ name: 'settings entity' }">Юридические лица</router-link>
                   </li>
                   <li>
                     <a href="javascript: void(0);">Банковские счета</a>

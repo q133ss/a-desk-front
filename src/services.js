@@ -178,6 +178,42 @@ async function getUsersByStatus(status) {
     return await getRequest('/users?active='+status, {}, true);
 }
 
+async function getEntities() {
+    return await getRequest('/entity', {}, true);
+}
+
+export async function submitEntityForm(entity_name, full_name, inn, kpp, ogrn, ur_address, phone, with_nds){
+    const data = {
+        entity_name,
+        full_name,
+        inn,
+        kpp,
+        ogrn,
+        ur_address,
+        phone,
+        with_nds
+    };
+    return await postRequest('/entity', data, true);
+}
+
+export async function getEntity(id){
+    return await getRequest('/entity/'+id, {}, true);
+}
+
+export async function editEntityForm(id, entity_name, full_name, inn, kpp, ogrn, ur_address, phone, with_nds){
+    const data = {
+        entity_name,
+        full_name,
+        inn,
+        kpp,
+        ogrn,
+        ur_address,
+        phone,
+        with_nds
+    };
+    return await patchRequest('/entity/'+id, data, true);
+}
+
 export {
     getRequest,
     postRequest,
@@ -190,5 +226,6 @@ export {
     getUsers,
     getPermissions,
     submitUserForm,
-    getUsersByStatus
+    getUsersByStatus,
+    getEntities
 };

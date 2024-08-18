@@ -108,6 +108,14 @@ export default [
         },
         component: () => import('../views/page/settings/users')
     },
+    {
+        path: '/settings/entity',
+        name: 'settings entity',
+        meta: {
+            authRequired: true,
+        },
+        component: () => import('../views/page/settings/entity')
+    },
 
 
     /// below not my code
