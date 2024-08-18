@@ -49,6 +49,25 @@ async function postRequest(endpoint, data = {}, requireAuth = false) {
     }
 }
 
+async function patchRequest(endpoint, data = {}, requireAuth = false) {
+    try {
+        let headers = {};
+
+        if (requireAuth) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+        }
+
+        // Передаем заголовки как часть объекта конфигурации запроса
+        const response = await axios.patch(`${host_url}${endpoint}`, data, { headers });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+    }
+}
+
 // Метод для обработки ошибок
 function handleError(error) {
     if (error.response) {
@@ -135,6 +154,30 @@ async function updateProfile(avatar, email, name, phone, show_pennies, show_desc
     }
 }
 
+async function getUsers() {
+    return await getRequest('/users', {}, true);
+}
+
+async function getPermissions() {
+    return await getRequest('/permissions', {}, true);
+}
+
+async function submitUserForm(email, phone, selectedRole, selectedPermissions) {
+    let role_id = selectedRole;
+    let permissions = selectedPermissions;
+    const data = {
+        email,
+        phone,
+        role_id,
+        permissions
+    };
+    return await postRequest('/users', data, true);
+}
+
+async function getUsersByStatus(status) {
+    return await getRequest('/users?active='+status, {}, true);
+}
+
 export {
     getRequest,
     postRequest,
@@ -143,5 +186,9 @@ export {
     getCurrency,
     getTimezones,
     updateGeneralSettings,
-    updateProfile
+    updateProfile,
+    getUsers,
+    getPermissions,
+    submitUserForm,
+    getUsersByStatus
 };

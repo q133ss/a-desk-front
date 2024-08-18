@@ -100,6 +100,14 @@ export default [
         },
         component: () => import('../views/page/settings/profile')
     },
+    {
+        path: '/settings/users',
+        name: 'settings users',
+        meta: {
+            authRequired: true,
+        },
+        component: () => import('../views/page/settings/users')
+    },
 
 
     /// below not my code
