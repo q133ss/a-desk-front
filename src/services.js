@@ -214,6 +214,93 @@ export async function editEntityForm(id, entity_name, full_name, inn, kpp, ogrn,
     return await patchRequest('/entity/'+id, data, true);
 }
 
+export async function getAccounts(){
+    return await getRequest('/bank/account', {}, true);
+}
+
+export async function getAccountGroups(){
+    return await getRequest('/bank/account/get/groups', {}, true);
+}
+
+export async function getAccountArticles(){
+    return await getRequest('/back/account/get/articles', {}, true);
+}
+
+export async function getAccountById(id){
+    return await getRequest('/bank/account/'+id, {}, true);
+}
+export async function submitBankAccountsForm(
+    name,
+    group_id,
+    entity_id,
+    currency_id,
+    bank,
+    bik,
+    ks,
+    number,
+    commission_article_id,
+    return_clause_id,
+    initial_amount,
+    date,
+){
+    const data = {
+        name,
+        group_id,
+        entity_id,
+        currency_id,
+        bank,
+        bik,
+        ks,
+        number,
+        commission_article_id,
+        return_clause_id,
+        initial_amount,
+        date,
+    };
+    return await postRequest('/bank/account', data, true);
+}
+
+export async function addGroup(name){
+    const data = {
+        name
+    };
+    return await postRequest('/bank/account/group', data, true);
+}
+
+export async function submitBankAccountsEditForm(
+    id,
+    name,
+    group_id,
+    entity_id,
+    currency_id,
+    bank,
+    bik,
+    ks,
+    number,
+    commission_article_id,
+    return_clause_id,
+    initial_amount,
+    date,
+){
+    const data = {
+        name,
+        group_id,
+        entity_id,
+        currency_id,
+        bank,
+        bik,
+        ks,
+        number,
+        commission_article_id,
+        return_clause_id,
+        initial_amount,
+        date,
+    };
+    console.log('DAta');
+    console.log(data);
+    return await patchRequest('/bank/account/'+id, data, true);
+}
+
 export {
     getRequest,
     postRequest,

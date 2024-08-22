@@ -116,6 +116,14 @@ export default [
         },
         component: () => import('../views/page/settings/entity')
     },
+    {
+        path: '/settings/bank-accounts',
+        name: 'bank accounts',
+        meta: {
+            authRequired: true,
+        },
+        component: () => import('../views/page/settings/bank')
+    },
 
 
     /// below not my code

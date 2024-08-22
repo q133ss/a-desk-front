@@ -209,7 +209,7 @@ export default {
                     <router-link :to="{ name: 'settings entity' }">Юридические лица</router-link>
                   </li>
                   <li>
-                    <a href="javascript: void(0);">Банковские счета</a>
+                    <router-link :to="{ name: 'bank accounts' }">Банковские счета</router-link>
                   </li>
                   <li>
                     <a href="javascript: void(0);">Статьи операций</a>
