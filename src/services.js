@@ -296,8 +296,6 @@ export async function submitBankAccountsEditForm(
         initial_amount,
         date,
     };
-    console.log('DAta');
-    console.log(data);
     return await patchRequest('/bank/account/'+id, data, true);
 }
 

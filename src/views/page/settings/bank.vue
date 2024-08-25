@@ -103,6 +103,13 @@ export default {
         this.showEq = !this.showEq;
       }
     },
+    hideEditContent(type) {
+      if (type === 0) {
+        this.editShowInitial = !this.editShowInitial;
+      } else {
+        this.editShowEq = !this.editShowEq;
+      }
+    },
     isSelected(id) {
       return this.selectedAccounts.includes(id);
     },
@@ -207,7 +214,7 @@ export default {
       try {
         // Отправляем данные на сервер
         const response = await editEntityForm(
-            this.id,
+            this.editId,
             this.editEntityName,
             this.editFullName,
             this.editInn,
@@ -268,7 +275,7 @@ export default {
       try {
         const date = this.formatDate(this.date);
         const response = await submitBankAccountsEditForm(
-            this.id,
+            this.editId,
             this.editName,
             this.editGroupId,
             this.editEntityId,
@@ -466,12 +473,12 @@ export default {
                   </div>
                 </div>
 
-                <div class="form-check mb-3" v-show="type == 0">
+                <div class="form-check mb-3">
                   <input class="form-check-input" type="checkbox" @change="hideContent(1)" id="defaultCheck2" />
                   <label class="form-check-label" for="defaultCheck2">К этому счету подключен эквайринг</label>
                 </div>
 
-                <div class="row" v-if="showEq" v-show="type == 0">
+                <div class="row" v-if="showEq">
                   <div class="mb-4 col-md-6">
                     <label class="form-label">Статья комиссии</label>
                     <div class="position-relative">
