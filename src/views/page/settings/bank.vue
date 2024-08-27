@@ -11,7 +11,13 @@ import {
   editEntityForm,
   getCurrency,
   getAccountArticles,
-  getAccountGroups, getAccounts, submitBankAccountsForm, addGroup, getAccountById, submitBankAccountsEditForm
+  getAccountGroups,
+  getAccounts,
+  submitBankAccountsForm,
+  addGroup,
+  getAccountById,
+  submitBankAccountsEditForm,
+  getEntityAccounts
 } from "@/services";
 import ru from 'vue2-datepicker/locale/ru';
 
@@ -93,6 +99,14 @@ export default {
       editType: null,
 
       editId: null,
+
+      isActive: null,
+
+      tableType: 0,
+
+      entityAccounts: null,
+
+      test: [],
     };
   },
   methods: {
@@ -271,6 +285,12 @@ export default {
       this.$bvModal.show('modal-edit');
     },
 
+    setActive(value) {
+      this.isActive = value;
+      this.tableType = value ? 1 : 2;
+      //this.getUsers(value ? 1 : 0);
+    },
+
     async updateForm() {
       try {
         const date = this.formatDate(this.date);
@@ -327,6 +347,7 @@ export default {
 
       this.articles = await getAccountArticles();
 
+      this.entityAccounts = await getEntityAccounts();
     } catch (error) {
       console.error("Ошибка при получении данных пользователя:", error.message);
     }
@@ -350,8 +371,26 @@ export default {
 
         <div>
           <b-button v-b-modal.modal-standard variant="primary">Добавить вручную</b-button>
-        </div>
 
+          <div class="btn-group btn-group-toggle ml-1">
+            <label class="btn"
+                   :class="{ 'btn-outline-primary': isActive === true, 'btn-default': isActive === false }"
+                   @click="setActive(true)"
+            >
+              <input type="radio" name="options" value="true" checked="">
+              По юр.лицам
+            </label>
+            <label class="btn"
+                   :class="{ 'btn-outline-primary': isActive === false, 'btn-default': isActive === true }"
+                   @click="setActive(false)"
+            >
+              <input type="radio" name="options" value="false">
+              По группам
+            </label>
+
+          </div>
+
+        </div>
 
         <div class="col-sm-6 col-md-4 col-xl-3">
           <div class="my-4 text-center">
@@ -691,7 +730,7 @@ export default {
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
-              <table class="table mb-0">
+              <table class="table mb-0" v-if="tableType == 0">
                 <thead>
                 <tr>
                   <th><input type="checkbox" @click="toggleAll"></th>
@@ -711,6 +750,69 @@ export default {
                 </tr>
                 </tbody>
               </table>
+
+<!--              /// //// / -->
+
+              <table v-if="tableType == 1">
+                <thead>
+                <tr>
+
+
+                </tr>
+                </thead>
+                <tbody>
+                <div v-for="(category, categoryName) in accounts" :key="categoryName">
+                  <!-- Выводим название категории -->
+                  <h3>{{ categoryName }}</h3>
+
+                  <!-- Таблица с записями под каждой категорией -->
+<!--                  <table class="table">-->
+<!--                    <tr v-for="account in category" :key="account.id" style="cursor: pointer" :class="{ 'table-active': isSelected(account.id) }">-->
+<!--                      <td><input type="checkbox" :value="account.id" v-model="selectedAccounts"></td>-->
+<!--                      <th scope="row">{{ account.id }}</th>-->
+<!--                      <td @click="editForm(account.id)">{{ account.name }}</td>-->
+<!--                      <td @click="editForm(account.id)">{{ account.bank }}</td>-->
+<!--                      <td @click="editForm(account.id)">{{ account.currency }}</td>-->
+<!--                    </tr>-->
+<!--                  </table>-->
+                </div>
+                </tbody>
+              </table>
+
+
+<!--              2222-->
+
+              <table class="table mb-0" v-if="tableType == 1">
+                <thead>
+                <tr>
+                  <th><input type="checkbox" @click="toggleAll"></th>
+                  <th>#</th>
+                  <th>Название</th>
+                  <th>Состояние</th>
+                  <th>Реквизиты</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Внешний цикл для категорий -->
+                <tr v-for="(accounts, category) in entityAccounts" :key="category">
+                  <!-- Отображаем категорию как заголовок -->
+                  <td colspan="5" class="font-weight-bold">{{ category }}</td>
+                </tr>
+                <!-- Вложенный цикл для записей внутри категории -->
+                <tr v-for="account in accounts" :key="account.id" style="cursor: pointer" :class="{ 'table-active': isSelected(account.id) }">
+                  <td><input type="checkbox" :value="account.id" v-model="selectedAccounts"></td>
+                  <th scope="row">{{ account.id }}</th>
+                  <td @click="editForm(account.id)">{{ account.name }}</td>
+                  <td @click="editForm(account.id)">{{ account.status }}</td>
+                  <td @click="editForm(account.id)">{{ account.details }}</td>
+                </tr>
+                </tbody>
+              </table>
+
+<!--              2222-->
+
+<!--              ///////// -->
+
             </div>
           </div>
         </div>

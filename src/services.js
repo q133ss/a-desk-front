@@ -299,6 +299,10 @@ export async function submitBankAccountsEditForm(
     return await patchRequest('/bank/account/'+id, data, true);
 }
 
+export async function getEntityAccounts(){
+    return await getRequest('/bank/account/get/by/entity', {}, true);
+}
+
 export {
     getRequest,
     postRequest,
