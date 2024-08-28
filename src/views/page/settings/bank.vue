@@ -17,7 +17,7 @@ import {
   addGroup,
   getAccountById,
   submitBankAccountsEditForm,
-  getEntityAccounts
+  getEntityAccounts, getGroupAccounts, addToGroup
 } from "@/services";
 import ru from 'vue2-datepicker/locale/ru';
 
@@ -106,7 +106,9 @@ export default {
 
       entityAccounts: null,
 
-      test: [],
+      groupAccounts: null,
+
+      selectedGroupId: null,
     };
   },
   methods: {
@@ -320,6 +322,8 @@ export default {
         this.showErrorAlert = false;
 
         this.accounts = await getAccounts();
+        this.entityAccounts = await getEntityAccounts();
+        this.groupAccounts = await getGroupAccounts();
 
       } catch (error) {
         // Ошибка обновления
@@ -329,6 +333,40 @@ export default {
       }
       this.$bvModal.hide('modal-edit');
     },
+
+    async _addToGroup()
+    {
+      this.loading = true;
+
+      try {
+        // Отправляем данные на сервер
+        const response = await addToGroup(
+            this.selectedGroupId,
+            this.selectedAccounts
+        );
+
+        // Успешное обновление
+        this.successMessage = 'Счета успешно добавлены';
+        this.showSuccessAlert = true;
+        this.showErrorAlert = false;
+
+        // Обновляем список сущностей
+        const accounts = await getAccounts();
+        this.accounts = accounts;
+        this.entityAccounts = await getEntityAccounts();
+        this.groupAccounts = await getGroupAccounts();
+
+        // Закрываем модалку после успешного сохранения
+        this.$bvModal.hide('modal-group-select');
+      } catch (error) {
+        // Обработка ошибки
+        this.showErrorAlert = true;
+        this.errorMessage = error.message || 'Произошла ошибка при обновлении данных.';
+        this.showSuccessAlert = false;
+      } finally {
+        this.loading = false; // Отключаем состояние загрузки после завершения
+      }
+    }
   },
   async created() {
     try {
@@ -348,6 +386,8 @@ export default {
       this.articles = await getAccountArticles();
 
       this.entityAccounts = await getEntityAccounts();
+      this.groupAccounts = await getGroupAccounts();
+
     } catch (error) {
       console.error("Ошибка при получении данных пользователя:", error.message);
     }
@@ -565,10 +605,36 @@ export default {
 
               <button type="button" class="btn btn-primary" @click="_addGroup()">Добавить</button>
 
+              <template #modal-footer>
+                <b-button variant="secondary" @click="$bvModal.hide('modal-group')">Отмена</b-button>
+              </template>
             </b-modal>
           </div>
 <!--        /Add group -->
 
+
+<!--        Select group -->
+
+        <div class="my-4 text-center">
+          <b-modal id="modal-group-select" title="Добавить счета в группу" title-class="font-18">
+
+
+            <select class="form-control" v-model="selectedGroupId">
+              <option v-for="group in groups" :key="group.id" :value="group.id">
+                {{ group.name }}
+              </option>
+            </select>
+
+            <button type="button" class="btn btn-primary" @click="_addToGroup()">Добавить</button>
+
+            <template #modal-footer>
+              <b-button variant="secondary" @click="$bvModal.hide('modal-group-select')">Отмена</b-button>
+            </template>
+
+          </b-modal>
+        </div>
+
+<!--        // Select group -->
 <!--        Edit form -->
 
         <b-modal id="modal-edit" title="Редактировать счет" title-class="font-18">
@@ -727,6 +793,8 @@ export default {
 
         <!--        /Edit form -->
 
+        <b-button v-b-modal.modal-group-select variant="link" v-if="selectedAccounts.length > 0">Добавить в группу</b-button>
+
         <div class="card">
           <div class="card-body">
             <div class="table-responsive">
@@ -751,37 +819,6 @@ export default {
                 </tbody>
               </table>
 
-<!--              /// //// / -->
-
-              <table v-if="tableType == 1">
-                <thead>
-                <tr>
-
-
-                </tr>
-                </thead>
-                <tbody>
-                <div v-for="(category, categoryName) in accounts" :key="categoryName">
-                  <!-- Выводим название категории -->
-                  <h3>{{ categoryName }}</h3>
-
-                  <!-- Таблица с записями под каждой категорией -->
-<!--                  <table class="table">-->
-<!--                    <tr v-for="account in category" :key="account.id" style="cursor: pointer" :class="{ 'table-active': isSelected(account.id) }">-->
-<!--                      <td><input type="checkbox" :value="account.id" v-model="selectedAccounts"></td>-->
-<!--                      <th scope="row">{{ account.id }}</th>-->
-<!--                      <td @click="editForm(account.id)">{{ account.name }}</td>-->
-<!--                      <td @click="editForm(account.id)">{{ account.bank }}</td>-->
-<!--                      <td @click="editForm(account.id)">{{ account.currency }}</td>-->
-<!--                    </tr>-->
-<!--                  </table>-->
-                </div>
-                </tbody>
-              </table>
-
-
-<!--              2222-->
-
               <table class="table mb-0" v-if="tableType == 1">
                 <thead>
                 <tr>
@@ -794,24 +831,51 @@ export default {
                 </thead>
                 <tbody>
                 <!-- Внешний цикл для категорий -->
-                <tr v-for="(accounts, category) in entityAccounts" :key="category">
-                  <!-- Отображаем категорию как заголовок -->
-                  <td colspan="5" class="font-weight-bold">{{ category }}</td>
-                </tr>
-                <!-- Вложенный цикл для записей внутри категории -->
-                <tr v-for="account in accounts" :key="account.id" style="cursor: pointer" :class="{ 'table-active': isSelected(account.id) }">
-                  <td><input type="checkbox" :value="account.id" v-model="selectedAccounts"></td>
-                  <th scope="row">{{ account.id }}</th>
-                  <td @click="editForm(account.id)">{{ account.name }}</td>
-                  <td @click="editForm(account.id)">{{ account.status }}</td>
-                  <td @click="editForm(account.id)">{{ account.details }}</td>
-                </tr>
+                <template v-for="(accounts, category) in entityAccounts">
+                  <tr :key="category"> <!-- Перенесён атрибут :key сюда -->
+                    <td colspan="5"><strong class="font-size-18 bold">{{ category }}</strong></td>
+                  </tr>
+
+                  <!-- Внутренний цикл для счетов в каждой категории -->
+                  <tr v-for="account in accounts" :key="account.id" style="cursor: pointer" :class="{ 'table-active': isSelected(account.id) }">
+                    <td><input type="checkbox" :value="account.id" v-model="selectedAccounts"></td>
+                    <th scope="row">{{ account.id }}</th>
+                    <td @click="editForm(account.id)">{{ account.name }}</td>
+                    <td @click="editForm(account.id)">{{ account.status }}</td>
+                    <td @click="editForm(account.id)">{{ account.details }}</td>
+                  </tr>
+                </template>
                 </tbody>
               </table>
 
-<!--              2222-->
+              <table class="table mb-0" v-if="tableType == 2">
+                <thead>
+                <tr>
+                  <th><input type="checkbox" @click="toggleAll"></th>
+                  <th>#</th>
+                  <th>Название</th>
+                  <th>Состояние</th>
+                  <th>Реквизиты</th>
+                </tr>
+                </thead>
+                <tbody>
+                <!-- Внешний цикл для групп -->
+                <template v-for="(accounts, group) in groupAccounts">
+                  <tr :key="group"> <!-- Перенесён атрибут :key сюда -->
+                    <td colspan="5"><strong>{{ group }}</strong></td>
+                  </tr>
 
-<!--              ///////// -->
+                  <!-- Внутренний цикл для счетов в каждой группе -->
+                  <tr v-for="account in accounts" :key="account.id" style="cursor: pointer" :class="{ 'table-active': isSelected(account.id) }">
+                    <td><input type="checkbox" :value="account.id" v-model="selectedAccounts"></td>
+                    <th scope="row">{{ account.id }}</th>
+                    <td @click="editForm(account.id)">{{ account.name }}</td>
+                    <td @click="editForm(account.id)">{{ account.status }}</td>
+                    <td @click="editForm(account.id)">{{ account.details }}</td>
+                  </tr>
+                </template>
+                </tbody>
+              </table>
 
             </div>
           </div>

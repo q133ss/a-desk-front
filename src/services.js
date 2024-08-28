@@ -303,6 +303,18 @@ export async function getEntityAccounts(){
     return await getRequest('/bank/account/get/by/entity', {}, true);
 }
 
+export async function getGroupAccounts(){
+    return await getRequest('/bank/account/get/by/group', {}, true);
+}
+
+export async function addToGroup(group_id, items){
+    const data = {
+        group_id,
+        items
+    };
+    return await postRequest('/bank/account/add/group', data, true);
+}
+
 export {
     getRequest,
     postRequest,
