@@ -82,7 +82,17 @@ export default [
         meta: {
             authRequired: true,
         },
-        component: () => import('../views/pages/dashboard/index')
+        component: () => import('../views/pages/dashboard/index'),
+        beforeEnter: (to, from, next) => {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                next();
+            } else {
+                next({ name: 'login' });
+            }
+        },
     },
     {
         path: '/general/settings',
@@ -90,7 +100,17 @@ export default [
         meta: {
             authRequired: true,
         },
-        component: () => import('../views/page/settings/general')
+        component: () => import('../views/page/settings/general'),
+        beforeEnter: (to, from, next) => {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                next();
+            } else {
+                next({ name: 'login' });
+            }
+        },
     },
     {
         path: '/profile/settings',
@@ -98,7 +118,17 @@ export default [
         meta: {
             authRequired: true,
         },
-        component: () => import('../views/page/settings/profile')
+        component: () => import('../views/page/settings/profile'),
+        beforeEnter: (to, from, next) => {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                next();
+            } else {
+                next({ name: 'login' });
+            }
+        },
     },
     {
         path: '/settings/users',
@@ -106,7 +136,17 @@ export default [
         meta: {
             authRequired: true,
         },
-        component: () => import('../views/page/settings/users')
+        component: () => import('../views/page/settings/users'),
+        beforeEnter: (to, from, next) => {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                next();
+            } else {
+                next({ name: 'login' });
+            }
+        },
     },
     {
         path: '/settings/entity',
@@ -114,7 +154,17 @@ export default [
         meta: {
             authRequired: true,
         },
-        component: () => import('../views/page/settings/entity')
+        component: () => import('../views/page/settings/entity'),
+        beforeEnter: (to, from, next) => {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                next();
+            } else {
+                next({ name: 'login' });
+            }
+        },
     },
     {
         path: '/settings/bank-accounts',
@@ -122,7 +172,17 @@ export default [
         meta: {
             authRequired: true,
         },
-        component: () => import('../views/page/settings/bank')
+        component: () => import('../views/page/settings/bank'),
+        beforeEnter: (to, from, next) => {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                next();
+            } else {
+                next({ name: 'login' });
+            }
+        },
     },
 
 
