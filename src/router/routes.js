@@ -1,5 +1,15 @@
 import store from '@/state/store'
 
+
+/*
+ * - Группы счетов
+ * - Группы контрагентов
+ * - Направления
+ * - Выставление счетов
+ * - Товары и услуги
+ * - Статьи операций
+ */
+
 export default [
     {
         path: '/login',
@@ -186,7 +196,27 @@ export default [
     },
 
 
+    {
+        path: '/settings/counterparty',
+        name: 'settings-counterparty',
+        meta: {
+            authRequired: true,
+        },
+        component: () => import('../views/page/settings/counterparty'),
+        beforeEnter: (to, from, next) => {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                next();
+            } else {
+                next({ name: 'login' });
+            }
+        },
+    },
+
     /// below not my code
+
     {
         path: '/chat',
         name: 'Chat',

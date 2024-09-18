@@ -217,6 +217,9 @@ export default {
                   <li>
                     <a href="javascript: void(0);">Группы счетов</a>
                   </li>
+                  <li>
+                    <router-link :to="{ name: 'settings-counterparty' }">Группы контрагентов</router-link>
+                  </li>
                 </ul>
               </li>
             </ul>

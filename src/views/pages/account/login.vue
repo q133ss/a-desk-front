@@ -6,8 +6,8 @@ import { login } from "@/services";
 export default {
   data() {
     return {
-      email: "admin@themesdesign.in",
-      password: "123456",
+      email: "admin@email.net",
+      password: "password",
       submitted: false,
       tryingToLogIn: false,
       authError: null,  // для хранения сообщения об ошибке

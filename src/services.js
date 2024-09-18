@@ -68,6 +68,26 @@ async function patchRequest(endpoint, data = {}, requireAuth = false) {
     }
 }
 
+async function deleteRequest(endpoint, data = {}, requireAuth = false) {
+    try {
+        let headers = {};
+
+        if (requireAuth) {
+            const token = localStorage.getItem('token');
+            if (token) {
+                headers['Authorization'] = `Bearer ${token}`;
+            }
+        }
+
+        // Передаем заголовки как часть объекта конфигурации запроса
+        const response = await axios.delete(`${host_url}${endpoint}`, { headers });
+        return response.data;
+    } catch (error) {
+        handleError(error);
+    }
+}
+
+
 // Метод для обработки ошибок
 function handleError(error) {
     if (error.response) {
@@ -314,6 +334,34 @@ export async function addToGroup(group_id, items){
     };
     return await postRequest('/bank/account/add/group', data, true);
 }
+
+// Контрагенты
+export async function getCounterparties() {
+    return await getRequest('/counterparty', {}, true);
+}
+
+export async function submitCounterpartyForm(name) {
+    const data = {
+        name
+    };
+    return await postRequest('/counterparty', data, true);
+}
+
+export async function getCounterparty(id) {
+    return await getRequest(`/counterparty/${id}`, {}, true);
+}
+
+export async function deleteCounterparty(id) {
+    return await deleteRequest(`/counterparty/${id}`, {}, true);
+}
+
+export async function updateCounterparty(id, name) {
+    const data = {
+        name
+    };
+    return await patchRequest(`/counterparty/${id}`, data, true);
+}
+
 
 export {
     getRequest,
