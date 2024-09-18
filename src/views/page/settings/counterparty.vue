@@ -3,7 +3,7 @@
 import Layout from "../../layouts/main";
 import PageHeader from "@/components/page-header";
 import appConfig from "@/app.config";
-import { getCounterparties, submitCounterpartyForm, getCounterparty, updateCounterparty } from "@/services";
+import { getCounterparties, submitCounterpartyForm, getCounterparty, updateCounterparty, deleteCounterparty } from "@/services";
 
 /**
  * Counterparty-table component
@@ -118,6 +118,26 @@ export default {
         this.loading = false;
       }
     },
+    async deleteCounter() {
+      try{
+        await deleteCounterparty(this.id);
+        this.successMessage = 'Контрагент успешно удален!';
+        this.showSuccessAlert = true;
+        this.showErrorAlert = false;
+
+        // Обновляем список контрагентов
+        this.counterparties = await getCounterparties();
+
+        this.$bvModal.hide('modal-edit');
+        this.editCounterpartyName = "";
+      }catch (error){
+        this.showErrorAlert = true;
+        this.errorMessage = error.message || 'Произошла ошибка при удалении контрагента.';
+        this.showSuccessAlert = false;
+      } finally {
+        this.loading = false;
+      }
+    }
   },
   async created() {
     try {
@@ -185,8 +205,13 @@ export default {
               </form>
 
               <template #modal-footer>
-                <b-button variant="secondary" @click="$bvModal.hide('modal-edit')">Отмена</b-button>
-                <b-button variant="primary" @click="submitEditForm">Сохранить</b-button>
+                <div class="w-100 d-flex justify-content-between">
+                  <b-button variant="danger" @click="deleteCounter()">Удалить</b-button>
+                  <div>
+                    <b-button variant="secondary" class="mr-2" @click="$bvModal.hide('modal-edit')">Отмена</b-button>
+                    <b-button variant="primary" @click="submitEditForm">Сохранить</b-button>
+                  </div>
+                </div>
               </template>
             </b-modal>
           </div>
