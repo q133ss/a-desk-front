@@ -214,6 +214,24 @@ export default [
             }
         },
     },
+    {
+        path: '/settings/project-categories',
+        name: 'project-categories',
+        meta: {
+            authRequired: true,
+        },
+        component: () => import('../views/page/settings/business-dir'),
+        beforeEnter: (to, from, next) => {
+            const user = localStorage.getItem('user');
+            const token = localStorage.getItem('token');
+
+            if (user && token) {
+                next();
+            } else {
+                next({ name: 'login' });
+            }
+        },
+    },
 
     /// below not my code
 

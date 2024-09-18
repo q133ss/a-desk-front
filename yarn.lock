@@ -8616,6 +8616,16 @@ sortablejs@1.10.2:
   resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.10.2.tgz#6e40364d913f98b85a14f6678f92b5c1221f5290"
   integrity sha512-YkPGufevysvfwn5rfdlGyrGjt7/CRHwvRPogD/lC+TnvcN29jDpCifKP+rBqf+LRldfXSTh+0CGLcSg0VIxq3A==
 
+sortablejs@1.14.0:
+  version "1.14.0"
+  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.14.0.tgz#6d2e17ccbdb25f464734df621d4f35d4ab35b3d8"
+  integrity sha512-pBXvQCs5/33fdN1/39pPL0NZF20LeRbLQ5jtnheIPN9JQAaufGjKdWduZn4U7wCtVuzKhmRkI0DFYHYRbB2H1w==
+
+sortablejs@^1.15.3:
+  version "1.15.3"
+  resolved "https://registry.yarnpkg.com/sortablejs/-/sortablejs-1.15.3.tgz#033668db5ebfb11167d1249ab88e748f27959e29"
+  integrity sha512-zdK3/kwwAK1cJgy1rwl1YtNTbRmc8qW/+vgXf75A7NHag5of4pyI6uK86ktmQETyWRH7IGaE73uZOOBcGxgqZg==
+
 source-list-map@^2.0.0:
   version "2.0.1"
   resolved "https://registry.yarnpkg.com/source-list-map/-/source-list-map-2.0.1.tgz#3993bd873bfc48479cca9ea3a547835c7c154b34"
@@ -9792,6 +9802,13 @@ vue2-leaflet@^2.6.0:
   version "2.7.1"
   resolved "https://registry.yarnpkg.com/vue2-leaflet/-/vue2-leaflet-2.7.1.tgz#2f95c287621bf778f10804c88223877f5c049257"
   integrity sha512-K7HOlzRhjt3Z7+IvTqEavIBRbmCwSZSCVUlz9u4Rc+3xGCLsHKz4TAL4diAmfHElCQdPPVdZdJk8wPUt2fu6WQ==
+
+vue3-draggable-next@^4.1.4:
+  version "4.1.4"
+  resolved "https://registry.yarnpkg.com/vue3-draggable-next/-/vue3-draggable-next-4.1.4.tgz#84e9e2da2e1ece7631b045167db90d400bd52127"
+  integrity sha512-29wEVebHRk0ybJEvmcQ+R/Or7Ogtp5/jc1WhVk5nEhDR7uq+iWHodScxWjG4xg4jrfA1KGWltcaGyklPpFC0qQ==
+  dependencies:
+    sortablejs "1.14.0"
 
 vue@^2.2.6, vue@^2.3.3, vue@^2.5.22, vue@^2.6.12:
   version "2.7.16"

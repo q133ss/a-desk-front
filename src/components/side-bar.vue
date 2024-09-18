@@ -220,6 +220,10 @@ export default {
                   <li>
                     <router-link :to="{ name: 'settings-counterparty' }">Группы контрагентов</router-link>
                   </li>
+
+                  <li>
+                    <router-link :to="{ name: 'project-categories' }">Направления бизнеса</router-link>
+                  </li>
                 </ul>
               </li>
             </ul>
