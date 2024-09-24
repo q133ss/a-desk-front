@@ -363,31 +363,38 @@ export async function updateCounterparty(id, name) {
 }
 
 // Направления бизнеса
+// Получение направлений бизнеса
 export async function getBusinessDirections() {
     return await getRequest('/businessdir', {}, true);
 }
 
+// Получение конкретного направления бизнеса
 export async function getBusinessDirection(id) {
     return await getRequest(`/businessdir/${id}`, {}, true);
 }
 
+// Добавление нового направления
 export async function submitBusinessDirectionForm(name, parent_id = null, position = 0) {
     const data = { name, parent_id, position };
     return await postRequest('/businessdir', data, true);
 }
 
+// Обновление направления бизнеса
 export async function updateBusinessDirection(id, name) {
     const data = { name };
     return await patchRequest(`/businessdir/${id}`, data, true);
 }
 
+// Удаление направления бизнеса
 export async function deleteBusinessDirection(id) {
     return await deleteRequest(`/businessdir/${id}`, {}, true);
 }
 
+// Отправка данных о сортировке на сервер
 export async function updateBusinessDirectionOrder(sortedItems) {
     return await postRequest('/business-directions/sort', { items: sortedItems }, true);
 }
+
 
 export {
     getRequest,
