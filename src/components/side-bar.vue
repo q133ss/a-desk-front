@@ -83,6 +83,7 @@ export default {
       }
     }
   },
+
   methods: {
     /**
      * Returns true or false if given menu item has child or not
@@ -188,13 +189,13 @@ export default {
                 <a href="javascript: void(0);" class="has-arrow">Система</a>
                 <ul class="sub-menu" aria-expanded="true">
                   <li>
-                    <router-link :to="{ name: 'general settings' }">Общие настройки</router-link>
+                    <router-link class="side-nav-link-ref" :to="{ name: 'general settings' }">Общие настройки</router-link>
                   </li>
                   <li>
-                    <router-link :to="{ name: 'profile settings' }">Профиль</router-link>
+                    <router-link class="side-nav-link-ref" :to="{ name: 'profile settings' }">Профиль</router-link>
                   </li>
                   <li>
-                    <router-link :to="{ name: 'settings users' }">Пользователи</router-link>
+                    <router-link class="side-nav-link-ref" :to="{ name: 'settings users' }">Пользователи</router-link>
                   </li>
                   <li>
                     <a href="javascript: void(0);">Партнерская программа</a>
@@ -206,10 +207,10 @@ export default {
                 <a href="javascript: void(0);" class="has-arrow">Ваш бизнес</a>
                 <ul class="sub-menu" aria-expanded="true">
                   <li>
-                    <router-link :to="{ name: 'settings entity' }">Юридические лица</router-link>
+                    <router-link class="side-nav-link-ref" :to="{ name: 'settings entity' }">Юридические лица</router-link>
                   </li>
                   <li>
-                    <router-link :to="{ name: 'bank accounts' }">Банковские счета</router-link>
+                    <router-link class="side-nav-link-ref" :to="{ name: 'bank accounts' }">Банковские счета</router-link>
                   </li>
                   <li>
                     <a href="javascript: void(0);">Статьи операций</a>
@@ -218,11 +219,11 @@ export default {
                     <a href="javascript: void(0);">Группы счетов</a>
                   </li>
                   <li>
-                    <router-link :to="{ name: 'settings-counterparty' }">Группы контрагентов</router-link>
+                    <router-link class="side-nav-link-ref" :to="{ name: 'settings-counterparty' }">Группы контрагентов</router-link>
                   </li>
 
                   <li>
-                    <router-link :to="{ name: 'project-categories' }">Направления бизнеса</router-link>
+                    <router-link class="side-nav-link-ref" :to="{ name: 'project-categories' }">Направления бизнеса</router-link>
                   </li>
                 </ul>
               </li>
@@ -235,3 +236,8 @@ export default {
   </div>
   <!-- Left Sidebar End -->
 </template>
+<style>
+.router-link-active{
+  color: #ffffff !important;
+}
+</style>
